@@ -104,17 +104,9 @@ void loadData()
 
 void draw()
 {
-   x = x + 0.8;
-   
-     if (x > width + dim) 
-      {
-          x = -dim;
-      } 
-         
-    image(steam, 100 + x, 0);
-    image(steam, -100 - x, 0);
-    image(steam, 100 + x, 200);
-    image(steam, -100 - x, 200);
+    
+      x = x + 0.8;
+
 }
 
 
@@ -205,6 +197,9 @@ void drawWords()
 {  
     background(0);
     fill(250, 100, 100);
+    
+    moveSteam();
+ 
    
   for (int i = 0 ; i < flavourData.size(); i ++)
   {
@@ -219,4 +214,16 @@ void drawWords()
  
 }
  
- 
+void moveSteam()
+{
+     
+       if (x > width + dim) 
+        {
+            x = -dim;
+        } 
+           
+      image(steam, 100 + x, 0);
+      image(steam, -100 - x, 0);
+      image(steam, 100 + x, 200);
+      image(steam, -100 - x, 200);
+}
