@@ -1,18 +1,62 @@
 //global arrayLists
 ArrayList<TEA> flavourData = new ArrayList<TEA>();
+ArrayList<Pos> xyPos = new ArrayList <Pos>();
 ArrayList<Float> teaData = new ArrayList<Float>(); // Create an arraylist
 ArrayList<String> countryData = new ArrayList<String>(); // Create an arraylist
 
-int mode;
+float mode = 0.0;
+
+PImage steam;
+
+float dim = 80.0;
+float x;
+
+
+import controlP5.*;
+ControlP5 cp5;
+
 
 void setup()
 { 
     size (500, 500);
     background(0);
     
-    loadData();
+   steam = loadImage("steam.png");
+      
+   loadData();
+            
+  cp5 = new ControlP5(this);
+  
+  
+  cp5.addButton("BarChart")
+     .setValue(0)
+     .setPosition(290,30)
+     .setSize(200,19);
+     
+      
+  cp5.addButton("WordCloud")
+     .setValue(1)
+     .setPosition(290,50)
+     .setSize(200,19);
 
 } 
+
+public void controlEvent(ControlEvent theEvent)
+{
+     
+  if (theEvent.isController())
+  {
+    if (theEvent.controller().getName() == "BarChart")
+    {
+      drawBars();
+    }
+    if (theEvent.controller().getName() == "WordCloud")
+    {
+      drawWords();
+    }
+  }
+}
+
 
 void loadData()
 { 
@@ -45,10 +89,38 @@ void loadData()
     //adding data into each element of arrayList gdp
     flavourData.add(flavour_); 
   }
+
+  String[] posXY = loadStrings("xyPos.csv");
+  
+  for(int i = 0; i < posXY.length; i++)
+  {
+    
+    //intialising constructor and passing string array
+    Pos position = new Pos(posXY[i]);
+    //adding data into each element of arrayList gdp
+    xyPos.add(position); 
+  }
 }
+
+void draw()
+{
+   x = x + 0.8;
+   
+     if (x > width + dim) 
+      {
+          x = -dim;
+      } 
+         
+    image(steam, 100 + x, 0);
+    image(steam, -100 - x, 0);
+    image(steam, 100 + x, 200);
+    image(steam, -100 - x, 200);
+}
+
 
 void drawBars()
 {
+      
       background(0);
       
       float border = width * 0.1f;
@@ -60,7 +132,9 @@ void drawBars()
       drawAxis(10, 10, dataRange, border, windowRange); 
       
       float scale = windowRange / dataRange;
+      
       stroke(0, 255, 255);
+      fill(0, 100, 255);
       
       for (int i = 0 ; i < teaData.size(); i ++)
       {
@@ -70,7 +144,12 @@ void drawBars()
        rect(x, height - border, barWidth - 1, -y);
        
       }
-
+      
+      textAlign(RIGHT, CENTER);  
+      textSize(15);
+      fill(255);
+      text("Consumption of Tea per Capita", 250,30);
+  
 }
 
 void drawAxis(int horizIntervals, int verticalIntervals, float vertDataRange, float border, float windowRange)
@@ -95,7 +174,9 @@ void drawAxis(int horizIntervals, int verticalIntervals, float vertDataRange, fl
      
      // Print the text 
      textAlign(CENTER, CENTER);
-     text(countryData.get(i).substring(0, 3), x, textY);
+     textSize(15);
+     fill(255);
+     text(countryData.get(i).substring(0,3), x, textY);
     }
     
     // Draw the vertical axis
@@ -113,6 +194,8 @@ void drawAxis(int horizIntervals, int verticalIntervals, float vertDataRange, fl
       float hAxisLabel = verticalDataGap * i;
           
       textAlign(RIGHT, CENTER);  
+      textSize(10);
+      fill(255);
       text((int)hAxisLabel, border - (tickSize * 2.0f), y);
     }
   
@@ -120,32 +203,20 @@ void drawAxis(int horizIntervals, int verticalIntervals, float vertDataRange, fl
 
 void drawWords()
 {  
-   int j = 20;
-  
+    background(0);
+    fill(250, 100, 100);
+   
   for (int i = 0 ; i < flavourData.size(); i ++)
   {
-        j += 20; 
-        
-        float x = 200 + j;
-        float y = 200 + j;
         
       //moving onto next element everytime loop iterates
        TEA flavour_ = flavourData.get(i);
-   
-        text(flavour_.flavour, x, y);
+       Pos position = xyPos.get(i);
+
         textSize(flavour_.popularity);
-    }
- }
-
- 
-void keyPressed() {
-  // check which key was pressed and set the
-  // draw mode accordingly.
-  switch(key) 
-  {
-    case('0'): drawBars(); break;
-    case('1'): drawWords(); break;
- 
+        text(flavour_.flavour, position.xPos, position.yPos);
   }
+ 
 }
-
+ 
+ 
