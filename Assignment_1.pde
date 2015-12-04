@@ -4,14 +4,15 @@ ArrayList<Pos> xyPos = new ArrayList <Pos>();
 ArrayList<Float> teaData = new ArrayList<Float>(); // Create an arraylist
 ArrayList<String> countryData = new ArrayList<String>(); // Create an arraylist
 
-float mode = 0.0;
+
+//global variables
 
 PImage steam;
 
 float dim = 80.0;
 float x;
 
-
+int mode = 1;
 import controlP5.*;
 ControlP5 cp5;
 
@@ -28,13 +29,13 @@ void setup()
   cp5 = new ControlP5(this);
   
   
-  cp5.addButton("BarChart")
+  cp5.addButton("WordCloud")
      .setValue(0)
      .setPosition(290,30)
      .setSize(200,19);
      
       
-  cp5.addButton("WordCloud")
+  cp5.addButton("BarChart")
      .setValue(1)
      .setPosition(290,50)
      .setSize(200,19);
@@ -48,11 +49,11 @@ public void controlEvent(ControlEvent theEvent)
   {
     if (theEvent.controller().getName() == "BarChart")
     {
-      drawBars();
+      mode = 0;
     }
     if (theEvent.controller().getName() == "WordCloud")
     {
-      drawWords();
+      mode = 1;
     }
   }
 }
@@ -104,9 +105,16 @@ void loadData()
 
 void draw()
 {
-    
-      x = x + 0.8;
+  background(0);
 
+ if(mode == 0)
+ {
+   drawBars();
+ }
+ else
+ {
+   drawWords();
+ }
 }
 
 
@@ -199,8 +207,7 @@ void drawWords()
     fill(250, 100, 100);
     
     moveSteam();
- 
-   
+  
   for (int i = 0 ; i < flavourData.size(); i ++)
   {
         
@@ -216,6 +223,7 @@ void drawWords()
  
 void moveSteam()
 {
+     x = x + 0.8;
      
        if (x > width + dim) 
         {
