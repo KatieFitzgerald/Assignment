@@ -8,11 +8,9 @@ ArrayList<String> countryData = new ArrayList<String>(); // Create an arraylist
 //global variables
 
 PImage steam;
-
 float dim = 80.0;
 float x;
-
-int mode = 1;
+Boolean mode;
 import controlP5.*;
 ControlP5 cp5;
 
@@ -49,11 +47,11 @@ public void controlEvent(ControlEvent theEvent)
   {
     if (theEvent.controller().getName() == "BarChart")
     {
-      mode = 0;
+      mode = false;
     }
     if (theEvent.controller().getName() == "WordCloud")
     {
-      mode = 1;
+      mode = true;
     }
   }
 }
@@ -107,7 +105,7 @@ void draw()
 {
   background(0);
 
- if(mode == 0)
+ if(mode == false)
  {
    drawBars();
  }
@@ -204,19 +202,28 @@ void drawAxis(int horizIntervals, int verticalIntervals, float vertDataRange, fl
 void drawWords()
 {  
     background(0);
-    fill(250, 100, 100);
     
+      textAlign(RIGHT, CENTER);  
+      textSize(15);
+      fill(255);
+      text("Popular Flavours of Tea", 200,30);
+      
     moveSteam();
   
   for (int i = 0 ; i < flavourData.size(); i ++)
   {
-        
-      //moving onto next element everytime loop iterates
+      int rand = 10;
+      rand = rand * i;
+
+      fill(0, 100, 255-rand);
+
+     //moving onto next element everytime loop iterates
        TEA flavour_ = flavourData.get(i);
        Pos position = xyPos.get(i);
 
         textSize(flavour_.popularity);
         text(flavour_.flavour, position.xPos, position.yPos);
+
   }
  
 }
