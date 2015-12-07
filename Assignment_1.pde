@@ -127,7 +127,7 @@ void drawBars()
       float dataRange = 80.0f;  
       float barWidth = windowRange / (float) countryData.size();
       
-      drawAxis(10, 10, dataRange, border, windowRange); 
+      drawAxis(10, dataRange, border, windowRange); 
       
       float scale = windowRange / dataRange;
       
@@ -150,7 +150,7 @@ void drawBars()
   
 }
 
-void drawAxis(int horizIntervals, int verticalIntervals, float vertDataRange, float border, float windowRange)
+void drawAxis(int verticalIntervals, float vertDataRange, float border, float windowRange)
 {
     stroke(200, 200, 200);
     fill(200, 200, 200);  
