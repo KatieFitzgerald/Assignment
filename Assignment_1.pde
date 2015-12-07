@@ -6,11 +6,12 @@ ArrayList<String> countryData = new ArrayList<String>(); // Create an arraylist
 
 
 //global variables
-
 PImage steam;
 float dim = 80.0;
 float x;
 Boolean mode;
+
+//Control p5 
 import controlP5.*;
 ControlP5 cp5;
 
@@ -19,11 +20,10 @@ void setup()
 { 
     size (500, 500);
     background(0);
-    
-   steam = loadImage("steam.png");
       
    loadData();
-            
+  
+  //create buttons
   cp5 = new ControlP5(this);
   
   
@@ -40,6 +40,7 @@ void setup()
 
 } 
 
+//check if the buttons are pressed
 public void controlEvent(ControlEvent theEvent)
 {
      
@@ -59,7 +60,7 @@ public void controlEvent(ControlEvent theEvent)
 
 void loadData()
 { 
-  
+ //load bar chart data
  String[] tea = loadStrings("tea.csv"); // Load each line into a String array
   for(String s:tea )
   {
@@ -68,7 +69,7 @@ void loadData()
     teaData.add(f);
   } 
 
-
+  //load bar chart countries
    String[] country = loadStrings("Countries.csv"); // Load each line into a String array
 
    for(String c:country )
@@ -77,7 +78,7 @@ void loadData()
     countryData.add(c);
   } 
   
-
+//load tea flavours for word cloud
   String[] lines = loadStrings("Flavours.csv");
   
   for(int i = 0; i < lines.length; i++)
@@ -89,6 +90,7 @@ void loadData()
     flavourData.add(flavour_); 
   }
 
+//load positions for wordcloud
   String[] posXY = loadStrings("xyPos.csv");
   
   for(int i = 0; i < posXY.length; i++)
@@ -99,6 +101,9 @@ void loadData()
     //adding data into each element of arrayList gdp
     xyPos.add(position); 
   }
+  
+  //loud clouds
+  steam = loadImage("steam.png");
 }
 
 void draw()
@@ -131,15 +136,17 @@ void drawBars()
       
       float scale = windowRange / dataRange;
       
-      stroke(0, 255, 255);
-      fill(0, 100, 255);
-      
       for (int i = 0 ; i < teaData.size(); i ++)
       {
         float x = border + (i * barWidth);
         float y = border + (teaData.get(i) * scale);
       
-       rect(x, height - border, barWidth - 1, -y);
+       int rand = 20;
+       rand = rand * i;
+    
+      stroke(0);
+      fill(0, 100, rand);
+      rect(x, height - border, barWidth - 1, -y);
        
       }
       
@@ -207,15 +214,17 @@ void drawWords()
       textSize(15);
       fill(255);
       text("Popular Flavours of Tea", 200,30);
-      
+    
+    //call cloud animation
     moveSteam();
   
+  //loop to draw words for arrayList
   for (int i = 0 ; i < flavourData.size(); i ++)
   {
-      int rand = 10;
-      rand = rand * i;
-
-      fill(0, 100, 255-rand);
+       int rand = 20;
+       rand = rand * i;
+    
+      fill(0, 100, rand);
 
      //moving onto next element everytime loop iterates
        TEA flavour_ = flavourData.get(i);
@@ -241,4 +250,5 @@ void moveSteam()
       image(steam, -100 - x, 0);
       image(steam, 100 + x, 200);
       image(steam, -100 - x, 200);
+      
 }
